@@ -3,7 +3,7 @@ framework:
     test: ~
     session:
         handler_id: ~
-        storage_id: session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
         name: MOCKSESSID
     form:            true
     csrf_protection: false
@@ -36,7 +36,7 @@ security:
                     admin: { password: admin, roles: [ROLE_SUPER_ADMIN] }
                     user: { password: user, roles: [ROLE_USER] }
 
-    encoders:
+    password_hashers:
         Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
@@ -47,7 +47,6 @@ security:
                 provider: memory
                 realm: "FOSCommentBundle Test Suite"
             logout:       true
-            anonymous:    true
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

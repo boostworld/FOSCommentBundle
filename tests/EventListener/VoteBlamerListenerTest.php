@@ -14,6 +14,7 @@ namespace FOS\CommentBundle\Tests\EventListener;
 use FOS\CommentBundle\Event\VoteEvent;
 use FOS\CommentBundle\EventListener\VoteBlamerListener;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class VoteBlamerListenerTest extends TestCase
 {
@@ -49,8 +50,9 @@ class VoteBlamerListenerTest extends TestCase
     {
         $vote = $this->getSignedVote();
         $vote->expects($this->never())->method('setVoter');
+        $token = $this->createMock(TokenInterface::class);
         $event = new VoteEvent($vote);
-        $this->tokenStorage->expects($this->once())->method('getToken')->will($this->returnValue('some non-null'));
+        $this->tokenStorage->expects($this->once())->method('getToken')->will($this->returnValue($token));
         $this->authorizationChecker->expects($this->once())->method('isGranted')->with('IS_AUTHENTICATED_REMEMBERED')->will($this->returnValue(false));
         $listener = new VoteBlamerListener($this->authorizationChecker, $this->tokenStorage);
         $listener->blame($event);

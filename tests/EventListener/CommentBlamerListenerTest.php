@@ -14,6 +14,7 @@ namespace FOS\CommentBundle\Tests\EventListener;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\EventListener\CommentBlamerListener;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class CommentBlamerListenerTest extends TestCase
 {
@@ -49,8 +50,10 @@ class CommentBlamerListenerTest extends TestCase
     {
         $comment = $this->getSignedComment();
         $comment->expects($this->never())->method('setAuthor');
+        $token = $this->createMock(TokenInterface::class);
+
         $event = new CommentEvent($comment);
-        $this->tokenStorage->expects($this->once())->method('getToken')->will($this->returnValue('some non-null'));
+        $this->tokenStorage->expects($this->once())->method('getToken')->will($this->returnValue($token));
         $this->authorizationChecker->expects($this->once())->method('isGranted')->with('IS_AUTHENTICATED_REMEMBERED')->will($this->returnValue(false));
         $listener = new CommentBlamerListener($this->authorizationChecker, $this->tokenStorage);
         $listener->blame($event);

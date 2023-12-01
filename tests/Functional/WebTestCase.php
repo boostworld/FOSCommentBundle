@@ -18,6 +18,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Base Functional test case. Inspired (copied) from FrameworkBundle and SecurityBundle's
@@ -31,6 +34,7 @@ class WebTestCase extends BaseWebTestCase
      */
     protected $em;
     protected static $schemaSetUp = false;
+    protected static $container = null;
 
     /**
      * @var AbstractBrowser
@@ -60,7 +64,7 @@ class WebTestCase extends BaseWebTestCase
         parent::setUp();
     }
 
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = [], array $server = []): KernelBrowser
     {
         if (static::$booted) {
             throw new \LogicException(sprintf('Booting the kernel before calling "%s()" is not supported, the kernel should only be booted once.', __METHOD__));
@@ -81,7 +85,7 @@ class WebTestCase extends BaseWebTestCase
         return $client;
     }
 
-    protected static function bootKernel(array $options = [])
+    protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelShutdown();
 
@@ -95,7 +99,7 @@ class WebTestCase extends BaseWebTestCase
 
         return static::$kernel;
     }
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
 
         if (null === static::$class) {
@@ -142,7 +146,7 @@ class WebTestCase extends BaseWebTestCase
         $fs->remove($dir);
     }
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         require_once __DIR__.'/app/AppKernel.php';
 
