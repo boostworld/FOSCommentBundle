@@ -13,8 +13,6 @@ jobs:
       matrix:
         include:
           - php: '7.4'
-            symfony_require: '4.4.*'
-          - php: '7.4'
             symfony_require: '5.4.*'
           - php: '8.1'
             symfony_require: '4.4.*'
