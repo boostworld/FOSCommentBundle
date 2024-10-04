@@ -542,7 +542,7 @@ class ThreadController extends AbstractFOSRestController
             ->setStatusCode(Response::HTTP_BAD_REQUEST)
             ->setData([
                     'data' => [
-                        'form' => $form,
+                        'form' => $form->createView(),
                         'id' => $id,
                         'parent' => $parent,
                     ],
