@@ -346,7 +346,7 @@ class ThreadController extends AbstractFOSRestController
             $thread->setPermalink($permalink);
 
             // Validate the entity
-            $errors = $this->container->get('core.validator')->validate($thread, null, ['NewThread']);
+            $errors = $this->get('validator')->validate($thread, null, ['NewThread']);
             if (count($errors) > 0) {
                 $view = View::create()
                     ->setStatusCode(Response::HTTP_BAD_REQUEST)
@@ -410,7 +410,7 @@ class ThreadController extends AbstractFOSRestController
                 return new Response($handler->renderTemplate($view, 'rss'), Response::HTTP_OK, $view->getHeaders());
             };
 
-            $this->container->get('fos_rest.view_handler')->registerHandler('rss', $templatingHandler);
+            $this->get('fos_rest.view_handler')->registerHandler('rss', $templatingHandler);
         }
 
         return $this->handleView($view);
