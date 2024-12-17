@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
      *
      * @return NodeInterface
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('fos_comment');
 
